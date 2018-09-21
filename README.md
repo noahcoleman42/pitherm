@@ -11,24 +11,22 @@ As of yet there's no code for:
 * plotting data.
 
 schedule.txt format:
-0-4 20, 4-16 80F, 16-24 20
-00-24 24
-00-24 24
-00-24 24
-00-24 24
-00-24 24
-00-24 24
+
+    0-4 20, 4-16 80F, 16-24 20
+    00-24 24
+    00-24 24
+    00-24 24
+    00-24 24
+    00-24 24
+    00-24 24
 
 on monday:
+
 From midnight to 4 am, goal 20 degC
+
 from 4am to 4 pm, goal 80 degF
+
 from 4pm to midnight, goal 20 degC
 
 every other day of week:
 24 degC goal constant
-
-Desired features:
-    sets temp from schedule file
-    easy to change schedule (web app?)
-    logs info (plot with plotly?)
-    can heat and cool
