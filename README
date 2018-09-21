@@ -2,7 +2,7 @@ This is an rpi thermostat code.
 
 Ideally, this will be simple and stupid.
 
-I've implemented a really dumb Flask web controlling interface. This should be worked on a lot to get pretty.
+I've implemented a really dumb Flask web controlling interface. This should be prettified and made mobile friendly.
 As of yet there's no code for actually flipping the relays, talking to the temperature sensor, logging data, or plotting it.
 
 schedule.txt format:
