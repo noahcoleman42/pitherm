@@ -1,8 +1,12 @@
 body {
     text-align: center;
-    background: #54ff9f;
+    background: #ff5454;
     color: #fff5ee;
 }
+table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        }
 .button{
     font: bold 16px Arial;
     background-color:#EEEEEE;

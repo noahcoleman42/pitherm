@@ -2,17 +2,38 @@
     <link rel="stylesheet" href="../static/style.css"/>
     <body>
         <h1> Status: </h1>
-        Allowed to heat: {{HEAT_MODE}}
-
-        Allowed to cool: {{COOL_MODE}}
-
-        A/C on : {{AC_ON}}
-
-        Heat on: {{HEAT_ON}}
-
-        Current temp: {{TEMP}}
-
-        Target  temp: {{TARGET_TEMP}}
+        <center>
+        <table>
+            <tr>
+            <th>Allowed to heat</th>
+            <th>Allowed to cool</th>
+            <th>A/C requested</th>
+            <th>Heat requested</th>
+            <th>Current temp</th>
+            <th>Target temp</th>
+            </tr>
+            <tr>
+                <td>
+                    {{HEAT_MODE}}
+                </td>
+                <td>
+                    {{COOL_MODE}}
+                </td>
+                <td>
+                    {{AC_ON}}
+                </td>
+                <td>
+                    {{HEAT_ON}}
+                </td>
+                <td>
+                    {{TEMP}}
+                </td>
+                <td>
+                    {{TARGET_TEMP}}
+                </td>
+            </tr>
+        </table>
+        </center>
         <h2>Current schedule</h2>
         {{CURR_PROG}}
         <h2>Thermostat Control</h2>
