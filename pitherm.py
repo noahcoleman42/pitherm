@@ -28,6 +28,7 @@ def get_desired_temp():
         earlyt, latet = map(int,times.split('-'))
         if earlyt < now.hour < latet:
             return temp
+    raise Exception("Schedule file invalid, some times are unscheduled!")
         
 def measure():
     return float(input('enter measured temp: '))
