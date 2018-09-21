@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template,redirect
 import json
 app = Flask(__name__)
 statefile = './state.json'
@@ -36,7 +36,8 @@ def button_press(action,switch):
             write_statefile(statefile,state)
     else:
         print('unrecognized url!')
-    return render_template('index.html',**state)
+    state = read_statefile(statefile)
+    return redirect('/')
 
 
 if __name__ == '__main__':
