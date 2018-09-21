@@ -2,6 +2,8 @@ This is an rpi thermostat code.
 
 Ideally, this will be simple and stupid.
 
+It would be nice to have a web interface, I'll try to add one next.
+
 schedule.txt format:
 0-4 20, 4-16 80F, 16-24 20
 00-24 24
