@@ -19,7 +19,7 @@ Let those install, then:
    
     git clone https://github.com/rjrosati/pitherm.git
     cd pitherm
-    virtualenv env
+    virtualenv --python=python3 env
     source env/bin/activate
     pip install -r requirements.txt 
 
