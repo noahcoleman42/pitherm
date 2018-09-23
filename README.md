@@ -10,6 +10,19 @@ As of yet there's no code for:
 * logging data
 * plotting data.
 
+# Installation
+
+    sudo apt update
+    sudo apt install python3-gpiozero git virtualenv crontab
+
+Let those install, then:
+   
+    git clone https://github.com/rjrosati/pitherm.git
+    cd pitherm
+    virtualenv env
+    source env/bin/activate
+    pip install -r requirements.txt 
+
 schedule.txt format:
 
     0-4 20, 4-16 80F, 16-24 20
