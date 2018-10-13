@@ -9,7 +9,7 @@ As of yet there's no code for:
 * allowing web edits of the schedule file
 * logging data
 * plotting data.
-* DHT11 sensor isn't good enough. Going to try again with a DS18B20
+* DHT11 sensor isn't good enough. Going to try again with an MCP9808
 
 # Installation
 
