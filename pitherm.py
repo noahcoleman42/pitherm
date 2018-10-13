@@ -5,6 +5,7 @@ import json
 import Adafruit_MCP9808.MCP9808 as MCP9808
 
 statefile = './state.json'
+logfile = './data.log'
 state = {
         'DELAY': 1, #s
         'THRESHOLD': 0.5, # degC
@@ -14,7 +15,8 @@ state = {
         'HEAT_ON': False,
         'TEMP': float('nan'),
         'TARGET_TEMP': float('nan'),
-        'CURR_PROG': ''
+        'CURR_PROG': '',
+        'LOGGING': True,
 }
 
 def write_statefile(statefile,state):
@@ -49,6 +51,14 @@ def get_desired_temp():
         
 def measure():
     return sensor.readTempC()
+def log_data(temp,now):
+    global state
+    if state['LOGGING']:
+        with open(logfile,'a') as f:
+            import pickle
+            data = (now.isoformat(), temp, state['AC_ON'], state['HEAT_ON'])
+            f.write(pickle.dumps(data)+'\n')
+
 
 write_statefile(statefile,state)
 sensor = MCP9808.MCP9808()
@@ -77,6 +87,7 @@ while True:
             print("turn on heat")
         else:
             print("turn off heat")
+    log_data(temp,now)
     write_statefile(statefile,state)
     time.sleep(state['DELAY'])
 
