@@ -5,11 +5,9 @@ Ideally, this will be simple and stupid.
 I've implemented a really dumb Flask web controlling interface. This should be prettified and made mobile friendly.
 As of yet there's no code for:
 * actually flipping the relays
-* talking to the temperature sensor
 * allowing web edits of the schedule file
 * logging data
 * plotting data.
-* DHT11 sensor isn't good enough. Going to try again with an MCP9808
 
 # Installation
 
