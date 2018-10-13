@@ -2,6 +2,7 @@
 import time
 import datetime
 import json
+import Adafruit_MCP9808.MCP9808 as MCP9808
 
 statefile = './state.json'
 state = {
@@ -47,14 +48,17 @@ def get_desired_temp():
     raise Exception("Schedule file invalid, some times are unscheduled!")
         
 def measure():
-    return float(input('enter measured temp: '))
+    return sensor.readTempC()
 
 write_statefile(statefile,state)
+sensor = MCP9808.MCP9808()
+sensor.begin()
 while True:
     state = read_statefile(statefile)
     state['TARGET_TEMP'] = get_desired_temp()
     print('goal temp: ',state['TARGET_TEMP'])
     state['TEMP'] = measure()
+    print('measured temp: ',state['TEMP'])
     temp = state['TEMP']
     desired_temp = state['TARGET_TEMP']
     if (temp < desired_temp - state['THRESHOLD']):
