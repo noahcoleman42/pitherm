@@ -54,7 +54,8 @@ def log_data(temp,now):
     if state['LOGGING']:
         with open(logfile,'a') as f:
             data = (now.isoformat(), temp, state['AC_ON'], state['HEAT_ON'])
-            f.write(pickle.dumps(data)+'\n')
+            datafmt = "{0} {1} {2} {3}\n"
+            f.write(datafmt.format(*data))
 
 
 write_statefile(statefile,state)
