@@ -11,7 +11,7 @@ As of yet there's no code for:
 
 # Installation
 First, you'll need to connect your Pi to your MCP9808 and relays. My circuit is
-[[diagram]]
+[[diagram]]. You should also set up your Pi to connect to your netowrk on boot.
 
 Then you can install the software:
 
