@@ -10,18 +10,31 @@ As of yet there's no code for:
 * plotting data.
 
 # Installation
+First, you'll need to connect your Pi to your MCP9808 and relays. My circuit is
+[[diagram]]
+
+Then you can install the software:
 
     sudo apt update
-    sudo apt install python3-gpiozero git virtualenv crontab
+    sudo apt upgrade
+    sudo apt install git virtualenv crontab ntp
 
-Let those install, then:
-   
+Let those install, then run `raspi-config` and do the following:
+* set your time zone
+* enable the I2C interface
+
+Reboot, then you should be able to install `pitherm`:
+
     git clone https://github.com/rjrosati/pitherm.git
     cd pitherm
     virtualenv --python=python3 env
     source env/bin/activate
-    pip install -r requirements.txt 
+    pip install -r requirements.txt
 
+Edit your crontab to start the temperature checking script and the flask webserver.
+TODO: pass data between them in `multiprocessing.Queue`
+
+# Scheduling
 schedule.txt format:
 
     0-4 20, 4-16 80F, 16-24 20

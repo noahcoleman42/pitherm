@@ -29,11 +29,10 @@ def read_statefile(statefile):
 def F_to_C(t):
     return (float(t)-32)*5/9
 
-def get_desired_temp():
+def get_desired_temp(now):
     global state
     with open('schedule.txt','r') as f:
         lines = f.readlines()
-    now = datetime.datetime.now()
     wd = now.weekday()
     sched = lines[wd]
     programs = [x.strip() for x in sched.split(',')]
@@ -48,14 +47,12 @@ def get_desired_temp():
             state['CURR_PROG'] = prog
             return temp
     raise Exception("Schedule file invalid, some times are unscheduled!")
-        
 def measure():
     return sensor.readTempC()
 def log_data(temp,now):
     global state
     if state['LOGGING']:
         with open(logfile,'a') as f:
-            import pickle
             data = (now.isoformat(), temp, state['AC_ON'], state['HEAT_ON'])
             f.write(pickle.dumps(data)+'\n')
 
@@ -64,8 +61,10 @@ write_statefile(statefile,state)
 sensor = MCP9808.MCP9808()
 sensor.begin()
 while True:
+    utc = datetime.datetime.utcnow()
+    local = datetime.datetime.now()
     state = read_statefile(statefile)
-    state['TARGET_TEMP'] = get_desired_temp()
+    state['TARGET_TEMP'] = get_desired_temp(local)
     print('goal temp: ',state['TARGET_TEMP'])
     state['TEMP'] = measure()
     print('measured temp: ',state['TEMP'])
@@ -87,7 +86,7 @@ while True:
             print("turn on heat")
         else:
             print("turn off heat")
-    log_data(temp,now)
+    log_data(temp,utc)
     write_statefile(statefile,state)
     time.sleep(state['DELAY'])
 
