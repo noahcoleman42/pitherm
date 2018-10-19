@@ -43,7 +43,7 @@ def get_desired_temp(now):
         else:
             temp = float(temp)
         earlyt, latet = map(int,times.split('-'))
-        if earlyt < now.hour < latet:
+        if earlyt <= now.hour < latet:
             state['CURR_PROG'] = prog
             return temp
     raise Exception("Schedule file invalid, some times are unscheduled!")
