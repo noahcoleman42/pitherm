@@ -58,8 +58,8 @@ def log_data(temp,now):
     global state
     if state['LOGGING']:
         with open(logfile,'a') as f:
-            data = (now.isoformat(), temp, state['AC_ON'], state['HEAT_ON'])
-            datafmt = "{0} {1} {2} {3}\n"
+            data = (now.isoformat(), temp, state['AC_ON'], state['HEAT_ON'],state['TARGET_TEMP'],state['THRESHOLD'])
+            datafmt = "{0} {1} {2} {3} {4} {5}\n"
             f.write(datafmt.format(*data))
 
 def AC_ON():
