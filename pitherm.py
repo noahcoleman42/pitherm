@@ -14,8 +14,8 @@ GPIO.setup([AC_PIN,HEAT_PIN],GPIO.OUT)
 state = {
         'DELAY': 1, #s
         'THRESHOLD': 0.5, # degC
-        'HEAT_MODE': False,
-        'COOL_MODE': True,
+        'HEAT_MODE': True,
+        'COOL_MODE': False,
         'AC_ON': False,
         'HEAT_ON': False,
         'TEMP': float('nan'),
@@ -63,12 +63,16 @@ def log_data(temp,now):
             f.write(datafmt.format(*data))
 
 def AC_ON():
+    print("AC ON")
     GPIO.output(AC_PIN,1)
 def AC_OFF():
+    print("AC OFF")
     GPIO.output(AC_PIN,0)
 def HEAT_ON():
+    print("HEAT ON")
     GPIO.output(HEAT_PIN,1)
 def HEAT_OFF():
+    print("HEAT OFF")
     GPIO.output(HEAT_PIN,0)
 
 write_statefile(statefile,state)
