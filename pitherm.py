@@ -3,9 +3,14 @@ import time
 import datetime
 import json
 import Adafruit_MCP9808.MCP9808 as MCP9808
+import RPi.GPIO as GPIO
 
 statefile = './state.json'
 logfile = './data.log'
+AC_PIN = 17
+HEAT_PIN = 27
+GPIO.setmode(GPIO.BCM)
+GPIO.setup([AC_PIN,HEAT_PIN],GPIO.OUT)
 state = {
         'DELAY': 1, #s
         'THRESHOLD': 0.5, # degC
@@ -57,6 +62,14 @@ def log_data(temp,now):
             datafmt = "{0} {1} {2} {3}\n"
             f.write(datafmt.format(*data))
 
+def AC_ON():
+    GPIO.output(AC_PIN,1)
+def AC_OFF():
+    GPIO.output(AC_PIN,0)
+def HEAT_ON():
+    GPIO.output(HEAT_PIN,1)
+def HEAT_OFF():
+    GPIO.output(HEAT_PIN,0)
 
 write_statefile(statefile,state)
 sensor = MCP9808.MCP9808()
@@ -79,14 +92,14 @@ while True:
         state['HEAT_ON'] = False
     if state['COOL_MODE']:
         if state['AC_ON']:
-            print("turn on AC")
+            AC_ON()
         else:
-            print("turn off AC")
+            AC_OFF()
     if state['HEAT_MODE']:
         if state['HEAT_ON']:
-            print("turn on heat")
+            HEAT_ON()
         else:
-            print("turn off heat")
+            HEAT_OFF()
     log_data(temp,utc)
     write_statefile(statefile,state)
     time.sleep(state['DELAY'])
