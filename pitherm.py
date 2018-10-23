@@ -44,7 +44,7 @@ def get_desired_temp(now):
     for prog in programs:
         times,temp = prog.split(' ')
         if temp.endswith('F'):
-            temp = F_to_C(temp)
+            temp = F_to_C(temp[:-1])
         else:
             temp = float(temp)
         earlyt, latet = map(int,times.split('-'))
