@@ -12,7 +12,7 @@ HEAT_PIN = 27
 GPIO.setmode(GPIO.BCM)
 GPIO.setup([AC_PIN,HEAT_PIN],GPIO.OUT)
 state = {
-        'DELAY': 1, #s
+        'DELAY': 20, #s
         'THRESHOLD': 0.5, # degC
         'HEAT_MODE': True,
         'COOL_MODE': False,
