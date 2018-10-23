@@ -17,7 +17,7 @@ Then you can install the software:
 
     sudo apt update
     sudo apt upgrade
-    sudo apt install git virtualenv cron ntp
+    sudo apt install git virtualenv crontab python3-dev ntp
 
 Let those install, then run `raspi-config` and do the following:
 * set your time zone
