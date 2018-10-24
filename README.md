@@ -4,10 +4,7 @@ Ideally, this will be simple and stupid.
 
 I've implemented a really dumb Flask web controlling interface. This should be prettified and made mobile friendly.
 As of yet there's no code for:
-* actually flipping the relays
 * allowing web edits of the schedule file
-* logging data
-* plotting data.
 
 # Installation
 First, you'll need to connect your Pi to your MCP9808 and relays. My circuit is
