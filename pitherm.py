@@ -84,7 +84,11 @@ while True:
     state = read_statefile(statefile)
     state['TARGET_TEMP'] = get_desired_temp(local)
     print('goal temp: ',state['TARGET_TEMP'])
-    state['TEMP'] = measure()
+    try:
+        state['TEMP'] = measure()
+    except OSError:
+        state['TEMP'] = float('nan')
+        print('measurement error')
     print('measured temp: ',state['TEMP'])
     temp = state['TEMP']
     desired_temp = state['TARGET_TEMP']
