@@ -18,6 +18,7 @@ def read_statefile(statefile):
     with open(statefile,'r') as f:
         return json.loads(''.join(f.readlines()))
 def update_plot():
+    t = time.time()
     tmp = np.loadtxt(datafile,usecols=1)
     sched = np.loadtxt(datafile,usecols=4)
     thresh = np.loadtxt(datafile,usecols=5)
@@ -76,6 +77,7 @@ def update_plot():
 
     fig = dict(data=data, layout=layout)
     div = plot(fig, show_link=False, output_type="div", include_plotlyjs=True)
+    print("took",time.time()-t,'s')
     return div
 
 
