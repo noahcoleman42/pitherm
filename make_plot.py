@@ -69,7 +69,7 @@ def update_plot():
     )
 
     fig = dict(data=data, layout=layout)
-    plotdata = plot(fig,output_type='div',include_plotlyjs=False)
+    plotdata = plot(fig,output_type='div',include_plotlyjs=True)
     print("took",time.time()-t,'s')
     with open(plotfile,'w') as f:
         f.write(plotdata)

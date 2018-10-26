@@ -1,6 +1,7 @@
 from flask import Flask, render_template,redirect
 import json
 import time
+import os.path
 app = Flask(__name__)
 statefile = './state.json'
 plotfile = './plot.html'
@@ -18,7 +19,7 @@ def index():
     template_data = read_statefile(statefile)
     if os.path.exists(plotfile):
         with open(plotfile,'r') as f:
-            plotdata = f.readall()
+            plotdata = f.read()
         template_data['plot'] = plotdata
     else:
         template_data['plot'] = " Waiting for plot data... Did you start the plotting script? Refresh in a few minutes!"
@@ -49,10 +50,5 @@ def button_press(action,switch):
 
 
 if __name__ == '__main__':
-    import configparser
-    conf = configparser.ConfigParser()
-    conf.read(creds)
-    up = conf['creds']
-    plotly.tools.set_credentials_file(username=up['user'], api_key=up['key'])
     state = read_statefile(statefile)
     app.run(debug=True,host='0.0.0.0')
