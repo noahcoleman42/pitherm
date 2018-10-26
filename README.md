@@ -4,20 +4,26 @@ Ideally, this will be simple and stupid.
 
 I've implemented a really dumb Flask web controlling interface. This should be prettified and made mobile friendly.
 As of yet there's no code for:
-* actually flipping the relays
 * allowing web edits of the schedule file
-* logging data
-* plotting data.
 
 # Installation
-First, you'll need to connect your Pi to your MCP9808 and relays. My circuit is
-[[diagram]]. You should also set up your Pi to connect to your netowrk on boot.
+## Circuit
+I used a Pi Zero W for this, but really any Pi with an internet connection should work.
+
+First, you'll need to connect your Pi to your MCP9808 and relays.
+Links to purchased ones.
+My circuit is:
+![diagram](https://raw.githubusercontent.com/rjrosati/pitherm/master/schematic.png)
+The Pi can't sink enough current to turn on the relays, so we use the Pi to turn on transistors and switch the relays from USB power. Note the pull-up resistors.
+
+## Software
+You should install the latest raspbian-lite and set up your Pi to connect to your network on boot.
 
 Then you can install the software:
 
     sudo apt update
     sudo apt upgrade
-    sudo apt install git virtualenv cron ntp
+    sudo apt install git virtualenv crontab python3-dev ntp
 
 Let those install, then run `raspi-config` and do the following:
 * set your time zone
@@ -32,7 +38,6 @@ Reboot, then you should be able to install `pitherm`:
     pip install -r requirements.txt
 
 Edit your crontab to start the temperature checking script and the flask webserver.
-TODO: pass data between them in `multiprocessing.Queue`
 
 # Scheduling
 schedule.txt format:
