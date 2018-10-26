@@ -32,11 +32,11 @@ def update_plot():
             # https://github.com/plotly/plotly.py/issues/209
             dates.append(naive)
     data = [
-            go.Scattergl(x=dates, y=tmp,name='temp'),
-            go.Scattergl(x=dates, y=sched,name='sched',legendgroup='sched'),
-            go.Scattergl(x=dates, y=sched+thresh, fill=None, mode=None, line={'color':'yellow'},
+            go.Scatter(x=dates, y=tmp,name='temp'),
+            go.Scatter(x=dates, y=sched,name='sched',legendgroup='sched'),
+            go.Scatter(x=dates, y=sched+thresh, fill=None, mode=None, line={'color':'yellow'},
                        showlegend=False, legendgroup='sched',hoverinfo='skip',opacity=0.1),
-            go.Scattergl(x=dates, y=sched-thresh, fill='tonexty', mode=None, line={'color':'yellow'},
+            go.Scatter(x=dates, y=sched-thresh, fill='tonexty', mode=None, line={'color':'yellow'},
                        showlegend=False, legendgroup='sched',hoverinfo='skip',opacity=0.1),
            ]
     layout = dict(
