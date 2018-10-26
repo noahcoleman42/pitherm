@@ -15,6 +15,12 @@ def update_plot():
     tmp = np.loadtxt(datafile,usecols=1)
     sched = np.loadtxt(datafile,usecols=4)
     thresh = np.loadtxt(datafile,usecols=5)
+    if tmp.shape != sched.shape or thresh.shape != sched.shape:
+        time.sleep(1)
+        tmp = np.loadtxt(datafile,usecols=1)
+        sched = np.loadtxt(datafile,usecols=4)
+        thresh = np.loadtxt(datafile,usecols=5)
+
     dates = []
     with open(datafile,'r') as f:
         for line in f:
@@ -26,11 +32,11 @@ def update_plot():
             # https://github.com/plotly/plotly.py/issues/209
             dates.append(naive)
     data = [
-            go.Scatter(x=dates, y=tmp,name='temp'),
-            go.Scatter(x=dates, y=sched,name='sched',legendgroup='sched'),
-            go.Scatter(x=dates, y=sched+thresh, fill=None, mode=None, line={'color':'yellow'},
+            go.Scattergl(x=dates, y=tmp,name='temp'),
+            go.Scattergl(x=dates, y=sched,name='sched',legendgroup='sched'),
+            go.Scattergl(x=dates, y=sched+thresh, fill=None, mode=None, line={'color':'yellow'},
                        showlegend=False, legendgroup='sched',hoverinfo='skip',opacity=0.1),
-            go.Scatter(x=dates, y=sched-thresh, fill='tonexty', mode=None, line={'color':'yellow'},
+            go.Scattergl(x=dates, y=sched-thresh, fill='tonexty', mode=None, line={'color':'yellow'},
                        showlegend=False, legendgroup='sched',hoverinfo='skip',opacity=0.1),
            ]
     layout = dict(
@@ -74,7 +80,7 @@ def update_plot():
     with open(plotfile,'w') as f:
         f.write(plotdata)
 
-updaterate = 120
+updaterate = 600
 plotdata = ''
 if __name__ == '__main__':
     while True:
