@@ -1,7 +1,8 @@
 from flask import Flask, render_template,redirect
 import json
 import numpy as np
-from plotly.offline import download_plotlyjs,plot,iplot
+import plotly
+import plotly.plotly as py
 import plotly.graph_objs as go
 from datetime import datetime
 import dateutil.parser
@@ -10,6 +11,7 @@ import time
 app = Flask(__name__)
 statefile = './state.json'
 datafile = './data.log'
+creds = './creds.ini'
 
 def write_statefile(statefile,state):
     with open(statefile,'w') as f:
@@ -76,13 +78,13 @@ def update_plot():
     )
 
     fig = dict(data=data, layout=layout)
-    div = plot(fig, show_link=False, output_type="div", include_plotlyjs=True)
+    py.plot(fig,name='pitherm',auto_open=False)
     print("took",time.time()-t,'s')
-    return div
+    return
 
 
 lastupdate = 0
-updaterate = 20
+updaterate = 120
 plotdata = ''
 @app.route('/')
 def index():
@@ -90,8 +92,8 @@ def index():
     template_data = read_statefile(statefile)
     if time.time() - lastupdate > updaterate:
         lastupdate=time.time()
-        plotdata = update_plot()
-    template_data['plot'] = plotdata
+        update_plot()
+    #template_data['plot'] = plotdata
     return render_template('index.html',**template_data)
 
 @app.route('/<action>/<switch>')
@@ -119,5 +121,10 @@ def button_press(action,switch):
 
 
 if __name__ == '__main__':
+    import configparser
+    conf = configparser.ConfigParser()
+    conf.read(creds)
+    up = conf['creds']
+    plotly.tools.set_credentials_file(username=up['user'], api_key=up['key'])
     state = read_statefile(statefile)
     app.run(debug=True,host='0.0.0.0')
