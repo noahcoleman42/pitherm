@@ -18,9 +18,6 @@
     }
 
 </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script src="https://d14fo0winaifog.cloudfront.net/plotly-basic.js"></script>
     </head>
     <body>
         <h1> Status: </h1>
@@ -55,7 +52,7 @@
                 </td>
             </tr>
         </table>
-        <div id='chart' class='chart' />
+        {{plot | safe}}
         </center>
         <h2>Current schedule</h2>
         {{CURR_PROG}}
@@ -64,8 +61,4 @@
         <h3> COOLING ==> <a href ="/cool/on" class="button">TURN_ON</a> <a href="/cool/off" class = "button">TURN OFF</a></h3>
         <h3> <a href='/edit'>EDIT SCHEDULE</a> </h3>
     </body>
-    <script type='text/javascript'>
-        var graphs = {{plot | safe }}
-        Plotly.plot('chart',graphs,{});
-    </script>
 </html>

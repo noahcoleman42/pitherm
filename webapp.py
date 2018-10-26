@@ -1,17 +1,10 @@
 from flask import Flask, render_template,redirect
 import json
-import numpy as np
-import plotly
-import plotly.plotly as py
-import plotly.graph_objs as go
-from datetime import datetime
-import dateutil.parser
-import pytz
 import time
+import os.path
 app = Flask(__name__)
 statefile = './state.json'
-datafile = './data.log'
-creds = './creds.ini'
+plotfile = './plot.html'
 
 def write_statefile(statefile,state):
     with open(statefile,'w') as f:
@@ -19,81 +12,17 @@ def write_statefile(statefile,state):
 def read_statefile(statefile):
     with open(statefile,'r') as f:
         return json.loads(''.join(f.readlines()))
-def update_plot():
-    t = time.time()
-    tmp = np.loadtxt(datafile,usecols=1)
-    sched = np.loadtxt(datafile,usecols=4)
-    thresh = np.loadtxt(datafile,usecols=5)
-    dates = []
-    with open(datafile,'r') as f:
-        for line in f:
-            #naive = datetime.fromisoformat(line.split()[0])
-            naive = dateutil.parser.parse(line.split()[0])
-            tz_aware = naive.replace(tzinfo=pytz.utc)
-            tz_aware = tz_aware.astimezone(pytz.timezone('America/Chicago'))
-            naive = tz_aware.replace(tzinfo=None) #plot.ly won't display tz-aware datetime objects properly
-            # https://github.com/plotly/plotly.py/issues/209
-            dates.append(naive)
-    data = [
-            go.Scatter(x=dates, y=tmp,name='temp'),
-            go.Scatter(x=dates, y=sched,name='sched',legendgroup='sched'),
-            go.Scatter(x=dates, y=sched+thresh, fill=None, mode=None, line={'color':'yellow'},
-                       showlegend=False, legendgroup='sched',hoverinfo='skip',opacity=0.1),
-            go.Scatter(x=dates, y=sched-thresh, fill='tonexty', mode=None, line={'color':'yellow'},
-                       showlegend=False, legendgroup='sched',hoverinfo='skip',opacity=0.1),
-           ]
-    layout = dict(
-        title='Gelbes Haus Thermostat',
-        xaxis=dict(
-            rangeselector=dict(
-                buttons=list([
-                    dict(count=1,
-                         label='1h',
-                         step='hour',
-                         stepmode='backward'),
-                    dict(count=10,
-                         label='10h',
-                         step='hour',
-                         stepmode='backward'),
-                    dict(count=1,
-                         label='1d',
-                         step='day',
-                         stepmode='backward'),
-                    dict(count=7,
-                         label='7d',
-                         step='day',
-                         stepmode='backward'),
-                    dict(count=1,
-                         label='1m',
-                         step='month',
-                         stepmode='backward'),
-                    dict(step='all')
-                ])
-            ),
-            rangeslider=dict(
-                visible = True
-            ),
-            type='date'
-        )
-    )
 
-    fig = dict(data=data, layout=layout)
-    py.plot(fig,name='pitherm',auto_open=False)
-    print("took",time.time()-t,'s')
-    return
-
-
-lastupdate = 0
-updaterate = 120
-plotdata = ''
 @app.route('/')
 def index():
     global statefile,lastupdate,updaterate,plotdata
     template_data = read_statefile(statefile)
-    if time.time() - lastupdate > updaterate:
-        lastupdate=time.time()
-        update_plot()
-    #template_data['plot'] = plotdata
+    if os.path.exists(plotfile):
+        with open(plotfile,'r') as f:
+            plotdata = f.read()
+        template_data['plot'] = plotdata
+    else:
+        template_data['plot'] = " Waiting for plot data... Did you start the plotting script? Refresh in a few minutes!"
     return render_template('index.html',**template_data)
 
 @app.route('/<action>/<switch>')
@@ -121,10 +50,5 @@ def button_press(action,switch):
 
 
 if __name__ == '__main__':
-    import configparser
-    conf = configparser.ConfigParser()
-    conf.read(creds)
-    up = conf['creds']
-    plotly.tools.set_credentials_file(username=up['user'], api_key=up['key'])
     state = read_statefile(statefile)
     app.run(debug=True,host='0.0.0.0')
