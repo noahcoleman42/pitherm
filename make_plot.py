@@ -9,6 +9,7 @@ import numpy as np
 datafile = './data.log'
 creds = './creds.ini'
 plotfile = './plot.html'
+updaterate = 30*60
 
 def update_plot():
     t = time.time()
@@ -80,8 +81,6 @@ def update_plot():
     with open(plotfile,'w') as f:
         f.write(plotdata)
 
-updaterate = 600
-plotdata = ''
 if __name__ == '__main__':
     while True:
         update_plot()
