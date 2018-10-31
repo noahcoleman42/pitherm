@@ -27,18 +27,13 @@ def update_plot():
             naive = tz_aware.replace(tzinfo=None) #plot.ly won't display tz-aware datetime objects properly
             # https://github.com/plotly/plotly.py/issues/209
             dates.append(naive)
-    if tmp.shape[0] != len(dates):
-        time.sleep(1)
-        tmp = np.loadtxt(datafile,usecols=1)
-        sched = np.loadtxt(datafile,usecols=4)
-        thresh = np.loadtxt(datafile,usecols=5)
     data = [
-            go.Scatter(x=dates, y=tmp,name='temp'),
-            go.Scatter(x=dates, y=sched,name='sched',legendgroup='sched'),
+            go.Scatter(x=dates, y=tmp,name='temp',connectgaps=False),
+            go.Scatter(x=dates, y=sched,name='sched',legendgroup='sched',connectgaps=False),
             go.Scatter(x=dates, y=sched+thresh, fill=None, mode=None, line={'color':'yellow'},
-                       showlegend=False, legendgroup='sched',hoverinfo='skip',opacity=0.1),
+                       showlegend=False, legendgroup='sched',hoverinfo='skip',opacity=0.1,connectgaps=False),
             go.Scatter(x=dates, y=sched-thresh, fill='tonexty', mode=None, line={'color':'yellow'},
-                       showlegend=False, legendgroup='sched',hoverinfo='skip',opacity=0.1),
+                       showlegend=False, legendgroup='sched',hoverinfo='skip',opacity=0.1,connectgaps=False),
            ]
     layout = dict(
         title='Gelbes Haus Thermostat',
@@ -83,5 +78,9 @@ def update_plot():
 
 if __name__ == '__main__':
     while True:
-        update_plot()
+        try:
+            update_plot()
+        except ValueError:
+            sleep(1)
+            pass
         time.sleep(updaterate)
