@@ -81,6 +81,6 @@ if __name__ == '__main__':
         try:
             update_plot()
         except ValueError:
-            sleep(1)
+            time.sleep(1)
             pass
         time.sleep(updaterate)
