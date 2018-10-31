@@ -22,6 +22,7 @@ state = {
         'TARGET_TEMP': float('nan'),
         'CURR_PROG': '',
         'LOGGING': True,
+        'SCHED':'sched_heat.txt',
 }
 
 def write_statefile(statefile,state):
@@ -36,7 +37,7 @@ def F_to_C(t):
 
 def get_desired_temp(now):
     global state
-    with open('schedule.txt','r') as f:
+    with open(state['SCHED'],'r') as f:
         lines = f.readlines()
     wd = now.weekday()
     sched = lines[wd]
@@ -99,11 +100,13 @@ while True:
         state['AC_ON'] = True
         state['HEAT_ON'] = False
     if state['COOL_MODE']:
+        state['SCHED'] = 'sched_cool.txt'
         if state['AC_ON']:
             AC_ON()
         else:
             AC_OFF()
     if state['HEAT_MODE']:
+        state['SCHED'] = 'sched_heat.txt'
         if state['HEAT_ON']:
             HEAT_ON()
         else:
