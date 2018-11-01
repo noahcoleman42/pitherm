@@ -64,17 +64,18 @@ def save_schedule():
     global statefile
     sched_text = request.form['text']
     template_data=dict()
-    if check_schedule(sched_text):
+    success, err_msg = check_schedule(sched_text)
+    if success:
         lines = sched_text.split('\n')
         lines = lines[:8]
         with open(state['SCHED'],'w') as f:
             f.write('\n'.join(lines))
         template_data['text'] = sched_text
-        template_data['err_msg'] = 'Schedule updated successfully.'
+        template_data['err_msg'] = err_msg
         return render_template('edit.html',**template_data)
     else:
         template_data['text'] = sched_text
-        template_data['err_msg'] = 'Your schedule file was invalid!'
+        template_data['err_msg'] = err_msg
         return render_template('edit.html',**template_data)
 
 if __name__ == '__main__':

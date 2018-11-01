@@ -19,6 +19,8 @@ state = {
         'LOGGING': True,
         'SCHED':'sched_heat.txt',
 }
+TEMP_HEAT_MAX = 25 # 77 F
+TEMP_COOL_MIN = 18 # 64.4F
 def write_statefile(statefile,state):
     with open(statefile,'w') as f:
         f.write(json.dumps(state))
@@ -40,12 +42,16 @@ def temp_from_sched(lines,now,writing=True):
             temp = F_to_C(temp[:-1])
         else:
             temp = float(temp)
+        if state['HEAT_MODE'] and temp > TEMP_HEAT_MAX:
+            raise Exception("Scheduled a temperature above maximum heat limit of {} degC".format(TEMP_HEAT_MAX))
+        elif state['COOL_MODE'] and temp < TEMP_COOL_MIN:
+            raise Exception("Scheduled a temperature below minimum cool limit of {} degC".format(TEMP_COOL_MIN))
         earlyt, latet = map(int,times.split('-'))
         if earlyt <= now.hour < latet:
             if writing:
                 state['CURR_PROG'] = prog
             return temp
-    raise Exception("Schedule file invalid, some times are unscheduled!")
+    raise Exception("Some times are unscheduled!")
 
 def get_desired_temp(now):
     global state
@@ -60,10 +66,10 @@ def check_schedule(text):
     while now < now_1wk:
         try:
             temp_from_sched(lines,now,False)
-        except:
-            return False
+        except Exception as e:
+            return False,"Schedule file not updated. "+str(e)
         now += onehr
-    return True
+    return True,'Schedule file successfully updated!'
 def measure():
     return sensor.readTempC()
 def log_data(temp,now):
