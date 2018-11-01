@@ -3,8 +3,6 @@ This is an rpi thermostat code.
 Ideally, this will be simple and stupid.
 
 I've implemented a really dumb Flask web controlling interface. This should be prettified and made mobile friendly.
-As of yet there's no code for:
-* allowing web edits of the schedule file
 
 # Installation
 ## Circuit
@@ -37,7 +35,7 @@ Reboot, then you should be able to install `pitherm`:
     source env/bin/activate
     pip install -r requirements.txt
 
-Edit your crontab to start the temperature checking script and the flask webserver.
+Edit your crontab to start the temperature checking script, the flask webserver, and the plotting script.
 
 # Scheduling
 schedule.txt format:
