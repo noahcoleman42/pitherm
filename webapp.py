@@ -15,6 +15,10 @@ def read_statefile(statefile):
         return json.loads(''.join(f.readlines()))
 
 @app.route('/')
+def go_to_therm():
+    return redirect('/thermostat')
+
+@app.route('/thermostat')
 def index():
     global statefile,lastupdate,updaterate,plotdata
     template_data = read_statefile(statefile)
@@ -26,7 +30,7 @@ def index():
         template_data['plot'] = " Waiting for plot data... Did you start the plotting script? Refresh in a few minutes!"
     return render_template('index.html',**template_data)
 
-@app.route('/<action>/<switch>')
+@app.route('/thermostat/<action>/<switch>')
 def button_press(action,switch):
     global state
     global statefile
@@ -47,9 +51,9 @@ def button_press(action,switch):
     else:
         print('unrecognized url!')
     state = read_statefile(statefile)
-    return redirect('../..')
+    return redirect('/thermostat')
 
-@app.route('/edit')
+@app.route('/thermostat/edit')
 def get_schedule():
     global statefile
     state = read_statefile(statefile)
@@ -59,7 +63,7 @@ def get_schedule():
     template_data['text'] = text
     template_data['err_msg'] = ''
     return render_template('edit.html',**template_data)
-@app.route('/edit',methods=['POST'])
+@app.route('/thermostat/edit',methods=['POST'])
 def save_schedule():
     global statefile
     sched_text = request.form['text']
