@@ -2,7 +2,7 @@ from flask import Flask, render_template,redirect,request
 import json
 import time
 import os.path
-from schedule import check_schedule
+from pitherm import check_schedule
 app = Flask(__name__)
 statefile = './state.json'
 plotfile = './plot.html'
@@ -63,9 +63,12 @@ def get_schedule():
 def save_schedule():
     global statefile
     sched_text = request.form['text']
+    template_data=dict()
     if check_schedule(sched_text):
+        lines = sched_text.split('\n')
+        lines = lines[:8]
         with open(state['SCHED'],'w') as f:
-            f.write(sched_text)
+            f.write('\n'.join(lines))
         template_data['text'] = sched_text
         template_data['err_msg'] = 'Schedule updated successfully.'
         return render_template('edit.html',**template_data)

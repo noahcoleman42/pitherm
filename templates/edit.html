@@ -21,11 +21,17 @@
     </head>
     <body>
         <h1>Current mode schedule:</h1>
+        <h3>{{err_msg}}</h3>
         <center>
-            <form method="POST">
-                <input name='text' value="{{text}}">
-                <input name='submit'>
+            <form method="POST" id="sched">
+                <textarea name="text" rows="7" cols="60" form="sched">
+{{text}}
+                </textarea>
+                <br />
+                <input type="submit" value="Submit Changes">
             </form>
+            <br/>
+            <a href="..">Back</a>
         </center>
     </body>
 </html>
