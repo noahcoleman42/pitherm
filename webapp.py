@@ -1,7 +1,8 @@
-from flask import Flask, render_template,redirect
+from flask import Flask, render_template,redirect,request
 import json
 import time
 import os.path
+from schedule import check_schedule
 app = Flask(__name__)
 statefile = './state.json'
 plotfile = './plot.html'
@@ -46,8 +47,32 @@ def button_press(action,switch):
     else:
         print('unrecognized url!')
     state = read_statefile(statefile)
-    return redirect('/')
+    return redirect('../..')
 
+@app.route('/edit')
+def get_schedule():
+    global statefile
+    state = read_statefile(statefile)
+    with open(state['SCHED'],'r') as f:
+        text = f.read()
+    template_data = dict()
+    template_data['text'] = text
+    template_data['err_msg'] = ''
+    return render_template('edit.html',**template_data)
+@app.route('/edit',methods=['POST'])
+def save_schedule():
+    global statefile
+    sched_text = request.form['text']
+    if check_schedule(sched_text):
+        with open(state['SCHED'],'w') as f:
+            f.write(sched_text)
+        template_data['text'] = sched_text
+        template_data['err_msg'] = 'Schedule updated successfully.'
+        return render_template('edit.html',**template_data)
+    else:
+        template_data['text'] = sched_text
+        template_data['err_msg'] = 'Your schedule file was invalid!'
+        return render_template('edit.html',**template_data)
 
 if __name__ == '__main__':
     state = read_statefile(statefile)
