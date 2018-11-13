@@ -4,6 +4,8 @@ Ideally, this will be simple and stupid.
 
 I've implemented a really dumb Flask web controlling interface. This should be prettified and made mobile friendly.
 
+There are a lot of SD card corruption issues when using this long-term. I should put the OS and the thermostat code on a read-only partition.
+
 # Installation
 ## Circuit
 I used a Pi Zero W for this, but really any Pi with an internet connection should work.
@@ -21,7 +23,7 @@ Then you can install the software:
 
     sudo apt update
     sudo apt upgrade
-    sudo apt install git virtualenv crontab python3-dev ntp
+    sudo apt install git virtualenv tmux python3-dev ntp
 
 Let those install, then run `raspi-config` and do the following:
 * set your time zone
@@ -35,7 +37,15 @@ Reboot, then you should be able to install `pitherm`:
     source env/bin/activate
     pip install -r requirements.txt
 
-Edit your crontab to start the temperature checking script, the flask webserver, and the plotting script.
+Edit your crontab to start the scripts
+
+    crontab -e
+Mine looks like
+    
+
+Start cron on boot:
+
+    sudo systemctl enable crond.service
 
 # Scheduling
 schedule.txt format:
