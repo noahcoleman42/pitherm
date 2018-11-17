@@ -128,12 +128,16 @@ if __name__=='__main__':
                 AC_ON()
             else:
                 AC_OFF()
+        else:
+            AC_OFF()
         if state['HEAT_MODE']:
             state['SCHED'] = 'sched_heat.txt'
             if state['HEAT_ON']:
                 HEAT_ON()
             else:
                 HEAT_OFF()
+        else:
+            HEAT_OFF()
         log_data(temp,utc)
         write_statefile(statefile,state)
         time.sleep(state['DELAY'])
