@@ -1,0 +1,64 @@
+<html>
+    <head>
+<style type='text/css'>
+    body {
+        text-align: center;
+        background: #ff5454;
+        color: #fff5ee;
+    }
+    table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            }
+    .button{
+        font: bold 16px Arial;
+        background-color:#EEEEEE;
+        padding: 1px;
+        border: 1px solid #CCCCCC;
+    }
+
+</style>
+    </head>
+    <body>
+        <h1> Status: </h1>
+        <center>
+        <table>
+            <tr>
+            <th>Allowed to heat</th>
+            <th>Allowed to cool</th>
+            <th>A/C requested</th>
+            <th>Heat requested</th>
+            <th>Current temp</th>
+            <th>Target temp</th>
+            </tr>
+            <tr>
+                <td>
+                    {{HEAT_MODE}}
+                </td>
+                <td>
+                    {{COOL_MODE}}
+                </td>
+                <td>
+                    {{AC_ON}}
+                </td>
+                <td>
+                    {{HEAT_ON}}
+                </td>
+                <td>
+                    {{TEMP}}
+                </td>
+                <td>
+                    {{TARGET_TEMP}}
+                </td>
+            </tr>
+        </table>
+        {{plot | safe}}
+        </center>
+        <h2>Current schedule</h2>
+        {{CURR_PROG}}
+        <h2>Thermostat Control</h2>
+        <h3> HEAT_MODE ==> <a href="/thermostat/heat/on" class="button">TURN_ON</a> <a href="/thermostat/heat/off" class = "button">TURN OFF</a></h3>
+        <h3> COOL_MODE ==> <a href="/thermostat/cool/on" class="button">TURN_ON</a> <a href="/thermostat/cool/off" class = "button">TURN OFF</a></h3>
+        <h3> <a href='/thermostat/edit'>EDIT SCHEDULE</a> </h3>
+    </body>
+</html>

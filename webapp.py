@@ -17,9 +17,8 @@ def read_statefile(statefile):
 @app.route('/')
 def go_to_therm():
     return redirect('/thermostat')
-
-@app.route('/thermostat')
-def index():
+@app.route('/thermostat/status')
+def status():
     global statefile,lastupdate,updaterate,plotdata
     template_data = read_statefile(statefile)
     if os.path.exists(plotfile):
@@ -28,6 +27,16 @@ def index():
         template_data['plot'] = plotdata
     else:
         template_data['plot'] = " Waiting for plot data... Did you start the plotting script? Refresh in a few minutes!"
+    return render_template('status.html',**template_data)
+
+@app.route('/thermostat')
+def index():
+    global statefile,lastupdate,updaterate,plotdata
+    template_data = read_statefile(statefile)
+    template_data['TEMP'] = str(round(template_data['TEMP'],1)) + r' &deg;C'
+    template_data['TARGET_TEMP'] = str(round(template_data['TARGET_TEMP'],1)) + r' &deg;C'
+    template_data['HEAT_CHECK'] = 'checked' if template_data['HEAT_MODE'] else ''
+    template_data['COOL_CHECK'] = 'checked' if template_data['COOL_MODE'] else ''
     return render_template('index.html',**template_data)
 
 @app.route('/thermostat/<action>/<switch>')

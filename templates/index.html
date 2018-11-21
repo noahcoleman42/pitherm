@@ -16,49 +16,136 @@
         padding: 1px;
         border: 1px solid #CCCCCC;
     }
+    /* The switch - the box around the slider */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+
+    /* Hide default HTML checkbox */
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    /* The slider */
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+
+    input:checked + .slider {
+      background-color: #2196F3;
+    }
+
+    input:focus + .slider {
+      box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+      border-radius: 34px;
+    }
+
+    .slider.round:before {
+      border-radius: 50%;
+    }
+    .item {
+        display: -webkit-flexbox;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+        justify-content: center;
+    }
+    .buttname {
+        margin-right: 10px;
+        display: inline-block;
+        font: bold 16px Arial;
+        /*background-color:#EEEEEE;*/
+        padding: 1px;
+        /*border: 1px solid #CCCCCC;*/
+    }
+    h1 {
+        font-size: 4em;
+    }
 
 </style>
     </head>
+    <script type='text/javascript'>
+        var heat_mode = ("{{HEAT_MODE}}" == "True");
+        var cool_mode = ("{{COOL_MODE}}" == "True");
+        function heat_toggle() {
+            if (heat_mode) {
+                window.open("/thermostat/heat/off","_self");
+                heat_mode=false;
+            }
+            else {
+                window.open("/thermostat/heat/on","_self");
+                heat_mode=true;
+            }
+        }
+        function cool_toggle() {
+            if (cool_mode) {
+                window.open("/thermostat/cool/off","_self");
+                cool_mode=false;
+            }
+            else {
+                window.open("/thermostat/cool/on","_self");
+                cool_mode=true;
+            }
+        }
+    </script>
     <body>
-        <h1> Status: </h1>
         <center>
-        <table>
-            <tr>
-            <th>Allowed to heat</th>
-            <th>Allowed to cool</th>
-            <th>A/C requested</th>
-            <th>Heat requested</th>
-            <th>Current temp</th>
-            <th>Target temp</th>
-            </tr>
-            <tr>
-                <td>
-                    {{HEAT_MODE}}
-                </td>
-                <td>
-                    {{COOL_MODE}}
-                </td>
-                <td>
-                    {{AC_ON}}
-                </td>
-                <td>
-                    {{HEAT_ON}}
-                </td>
-                <td>
-                    {{TEMP}}
-                </td>
-                <td>
-                    {{TARGET_TEMP}}
-                </td>
-            </tr>
-        </table>
-        {{plot | safe}}
+            <h1>{{TEMP|safe}}</h1>
+            <h3>scheduled: {{TARGET_TEMP|safe}}</h3>
+            <div class="item">
+            <div class="buttname">HEAT MODE</div><label class="switch">
+            <input type="checkbox" id="heatbox" onclick="heat_toggle()" {{HEAT_CHECK | safe}}>
+            <span class="slider round"></span>
+            </label>
+            </div>
+            <br />
+            <div class="item">
+            <div class="buttname">COOL MODE</div><label class="switch">
+            <input type="checkbox" id="coolbox" onclick="cool_toggle()" {{COOL_CHECK | safe}}>
+            <span class="slider round"></span>
+            </label>
+            </div>
+            <h3> <a href='/status'>STATUS</a> </h3>
+            <h3> <a href='/thermostat/edit'>EDIT SCHEDULE</a> </h3>
         </center>
-        <h2>Current schedule</h2>
-        {{CURR_PROG}}
-        <h2>Thermostat Control</h2>
-        <h3> HEAT_MODE ==> <a href="/thermostat/heat/on" class="button">TURN_ON</a> <a href="/thermostat/heat/off" class = "button">TURN OFF</a></h3>
-        <h3> COOL_MODE ==> <a href="/thermostat/cool/on" class="button">TURN_ON</a> <a href="/thermostat/cool/off" class = "button">TURN OFF</a></h3>
-        <h3> <a href='/thermostat/edit'>EDIT SCHEDULE</a> </h3>
     </body>
 </html>
