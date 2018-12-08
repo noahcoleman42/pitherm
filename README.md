@@ -43,11 +43,13 @@ Edit your crontab to start the scripts
 
     crontab -e
 Mine looks like
-    
+
+    @reboot /bin/bash /home/pi/pitherm/start.sh
+    0 5 * * * /bin/bash /home/pi/pitherm/move_data.sh
 
 Start cron on boot:
 
-    sudo systemctl enable crond.service
+    sudo systemctl enable cron.service
 
 # Scheduling
 schedule.txt format:
