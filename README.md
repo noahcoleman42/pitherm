@@ -16,7 +16,7 @@ My circuit is:
 ![diagram](https://raw.githubusercontent.com/rjrosati/pitherm/master/schematic.png)
 The Pi can't sink enough current to turn on the relays, so we use the Pi to turn on transistors and switch the relays from USB power. Note the pull-up resistors.
 
-Note: many AC units don't automatically turn on the fan. Mine didn't, so I shorted white to green.
+Note: many AC units don't automatically turn on the fan. Mine didn't, so I shorted yellow to green.
 
 ## Software
 You should install the latest raspbian-lite and set up your Pi to connect to your network on boot.
